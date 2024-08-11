@@ -1,5 +1,19 @@
 from rest_framework import serializers
-from watchlist_app.models import Movie
+from watchlist_app.models import Movie, StreamPlatform
+
+class StreamPlatformSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = StreamPlatform
+        fields = "__all__"
+
+
+
+
+
+
+
+
 
 def name_length(value):
     if len(value) < 2:

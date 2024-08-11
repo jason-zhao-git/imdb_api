@@ -1,12 +1,30 @@
 
 # Create your views here.
 from django.shortcuts import render
-from watchlist_app.models import Movie
+from watchlist_app.models import Movie, StreamPlatform
 from rest_framework.decorators import api_view
-from watchlist_app.api.serializers import MovieSerializer
+from rest_framework.views import APIView
+from watchlist_app.api.serializers import MovieSerializer, StreamPlatformSerializer
 from rest_framework.response import Response
 
 from rest_framework import status
+
+class ListPlatforms(APIView):
+    
+    def get(self, request):
+        platforms = StreamPlatform.objects.all()
+        serializer = StreamPlatformSerializer(platforms, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = StreamPlatformSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+        
+        
 
 @api_view(['GET', 'POST'])
 def movie_list(request):
